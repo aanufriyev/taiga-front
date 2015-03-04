@@ -36,7 +36,7 @@ taiga.generateUniqueSessionIdentifier = ->
 taiga.sessionId = taiga.generateUniqueSessionIdentifier()
 
 
-configure = ($routeProvider, $locationProvider, $httpProvider, $provide, $tgEventsProvider, tgLoaderProvider) ->
+configure = ($routeProvider, $locationProvider, $httpProvider, $provide, $tgEventsProvider, tgLoaderProvider, $compileProvider) ->
     $routeProvider.when("/",
         {templateUrl: "project/projects.html", resolve: {loader: tgLoaderProvider.add()}})
     $routeProvider.when("/project/:pslug/",
@@ -223,6 +223,8 @@ configure = ($routeProvider, $locationProvider, $httpProvider, $provide, $tgEven
         linewidth: "The subject must have a maximum size of %s"
     })
 
+    $compileProvider.debugInfoEnabled(window.taigaConfig.debugInfo)
+
 init = ($log, $i18n, $config, $rootscope, $auth, $events, $analytics) ->
     $i18n.initialize($config.get("defaultLanguage"))
     $log.debug("Initialize application")
@@ -280,6 +282,7 @@ module.config([
     "$provide",
     "$tgEventsProvider",
     "tgLoaderProvider",
+    "$compileProvider",
     configure
 ])
 
